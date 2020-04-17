@@ -4,16 +4,23 @@
 # Author : Colin Roskos
 import pigpio
 
-class Motor:
 
+class Motor:
 
     def __init__(self, i1, i2, i3, i4):
         self.pi = pigpio.pi()
-        self._step_order = [(1, 0, 1, 0), (0, 1, 1, 0), (0, 1, 0, 1), (1, 0, 0, 1)]
+        self._step_order = [(1,0,0,0),
+                            (1,1,0,0),
+                            (0,1,0,0),
+                            (0,1,1,0),
+                            (0,0,1,0),
+                            (0,0,1,1),
+                            (0,0,0,1),
+                            (1,0,0,1)]
+        self.num_steps = len(self._step_order)
         self.pins = [i1, i2, i3, i4]
         self.position = 0
         self.set_position(self.position)
-
 
     def set_position(self, step):
         self.pi.write(self.pins[0], self._step_order[step][0])
@@ -27,20 +34,22 @@ class Motor:
         else:
             self.position -= 1
 
-        self.position %= 4
+        self.position %= self.num_steps
         self.set_position(self.position)
 
     def print_position(self):
         print(self.position)
 
+
 def main():
     moto = Motor(2, 3, 4, 17)
     moto.print_position()
-
-    moto.change_position()
+    for i in range(1400):
+        moto.change_position()
     moto.print_position()
 
-if __name__=="__main__":
+
+if __name__ == "__main__":
     main()
 
 

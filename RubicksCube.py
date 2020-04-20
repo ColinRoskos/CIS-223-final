@@ -44,6 +44,24 @@ cube_map = [  # side (face, cell), or corner ((left_face, cell), (right_face, ce
     [((2, 5), (4, 5)), (4, 6), ((4, 7), (3, 7)), (2, 3), (3, 4), ((1, 0), (2, 0)), (1, 1), ((3, 2), (1, 2))],  # face_5
 ]
 
+
+def b_g_printer(val):
+    if val not in range(6):
+        raise ValueError
+    if val == 0:
+        return "\033[47m \033[00m"
+    if val == 1:
+        return "\033[41m \033[00m"
+    if val == 2:
+        return "\033[44m \033[00m"
+    if val == 3:
+        return "\033[45m \033[00m"
+    if val == 4:
+        return "\033[43m \033[00m"
+    if val == 5:
+        return "\033[0;103m \033[00m"
+
+
 class RubiksCube:
     # note on mechanics of the block:
     #   Only faces can rotate.
@@ -87,7 +105,12 @@ class RubiksCube:
     # yellow cross (complete) ->
     # intermetiate corner -> complete
 
-    def print_cube(self):
+    def print_cube(self, simple_print=True):
+
+        if simple_print:
+            self._print_cube()
+            return
+
         self.face_0.print_face()
         print("\n")
         self.face_1.print_face()
@@ -146,6 +169,71 @@ class RubiksCube:
             return cell, adj
 
         return cell
+
+    def _print_cube(self):
+        print("")
+        print("              -------------")
+        print("             || %s | %s | %s ||" % (b_g_printer(self.get_cell(1, 0)), b_g_printer(self.get_cell(1, 1)),
+                                                   b_g_printer(self.get_cell(1, 2))))
+        print("              -------------     _________________")
+        print("             || %s ||%s|| %s ||   //%s|| %s | %s | %s ||" % (b_g_printer(self.get_cell(1, 3)),
+                                                                           b_g_printer(1),
+                                                                           b_g_printer(self.get_cell(1, 4)),
+                                                                           b_g_printer(self.get_cell(3, 2)),
+                                                                           b_g_printer(self.get_cell(5, 7)),
+                                                                           b_g_printer(self.get_cell(5, 6)),
+                                                                           b_g_printer(self.get_cell(5, 5))))
+        print("              -------------   //|/|--------------")
+        print("             || %s | %s | %s || //%s/%s|| %s ||%s|| %s ||" % (b_g_printer(self.get_cell(1, 5)),
+                                                                            b_g_printer(self.get_cell(1, 6)),
+                                                                            b_g_printer(self.get_cell(1, 7)),
+                                                                            b_g_printer(self.get_cell(3, 1)),
+                                                                            b_g_printer(self.get_cell(3, 4)),
+                                                                            b_g_printer(self.get_cell(5, 4)),
+                                                                            b_g_printer(5),
+                                                                            b_g_printer(self.get_cell(5, 3))))
+        print("              ------------- //|/|/|--------------")
+        print("---------------------------//%s/%s/%s|| %s | %s | %s ||" % (b_g_printer(self.get_cell(3, 0)),
+                                                                          b_g_printer(3),
+                                                                          b_g_printer(self.get_cell(3, 7)),
+                                                                          b_g_printer(self.get_cell(5, 2)),
+                                                                          b_g_printer(self.get_cell(5, 1)),
+                                                                          b_g_printer(self.get_cell(5, 0))))
+        print("|| %s | %s | %s || %s | %s | %s |||/|/|//---------------" % (b_g_printer(self.get_cell(2, 0)),
+                                                                            b_g_printer(self.get_cell(2, 1)),
+                                                                            b_g_printer(self.get_cell(2, 2)),
+                                                                            b_g_printer(self.get_cell(0, 0)),
+                                                                            b_g_printer(self.get_cell(0, 1)),
+                                                                            b_g_printer(self.get_cell(0, 2))))
+        print("--------------------------- /%s/%s//" % (b_g_printer(self.get_cell(3, 3)),
+                                                        b_g_printer(self.get_cell(3, 6))))
+        print("|| %s ||%s|| %s || %s ||%s|| %s |||/|//" % (b_g_printer(self.get_cell(2, 3)),
+                                                         b_g_printer(2),
+                                                         b_g_printer(self.get_cell(2, 4)),
+                                                         b_g_printer(self.get_cell(0, 3)),
+                                                         b_g_printer(0),
+                                                         b_g_printer(self.get_cell(0, 4))))
+        print("--------------------------- /%s//" % (b_g_printer(self.get_cell(3, 5))))
+        print("|| %s | %s | %s || %s | %s | %s |||//" % (b_g_printer(self.get_cell(2, 5)),
+                                                         b_g_printer(self.get_cell(2, 6)),
+                                                         b_g_printer(self.get_cell(2, 7)),
+                                                         b_g_printer(self.get_cell(0, 5)),
+                                                         b_g_printer(self.get_cell(0, 6)),
+                                                         b_g_printer(self.get_cell(0, 7))))
+        print("--------------------------- //")
+        print("              -------------")
+        print("             || %s | %s | %s ||" % (b_g_printer(self.get_cell(4, 0)),
+                                                   b_g_printer(self.get_cell(4, 1)),
+                                                   b_g_printer(self.get_cell(4, 2))))
+        print("              -------------")
+        print("             || %s ||%s|| %s ||" % (b_g_printer(self.get_cell(4, 3)),
+                                                  b_g_printer(4) ,
+                                                  b_g_printer(self.get_cell(4, 4))))
+        print("              -------------")
+        print("             || %s | %s | %s ||" % (b_g_printer(self.get_cell(4, 5)),
+                                                   b_g_printer(self.get_cell(4, 6)),
+                                                   b_g_printer(self.get_cell(4, 7))))
+        print("              -------------")
 
 
 class RubiksFace:

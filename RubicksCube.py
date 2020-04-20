@@ -35,7 +35,7 @@
 import copy
 
 cube_map = [  # side (face, cell), or corner ((left_face, cell), (right_face, cell))
-    #        0           1           2           3       4           5           6           7
+    #        0           1             2            3       4           5            6           7
     [((2, 2), (1, 5)), (1, 6), ((1, 7), (3, 0)), (2, 4), (3, 3), ((4, 0), (2, 7)), (4, 1), ((3, 5), (4, 2))],  # face_0
     [((2, 0), (5, 5)), (5, 6), ((5, 7), (3, 2)), (2, 1), (3, 1), ((0, 0), (2, 2)), (0, 1), ((3, 0), (0, 2))],  # face_1
     [((5, 5), (1, 0)), (1, 3), ((1, 5), (0, 0)), (5, 3), (0, 3), ((4, 5), (5, 0)), (4, 3), ((0, 5), (4, 0))],  # face_2
@@ -44,12 +44,21 @@ cube_map = [  # side (face, cell), or corner ((left_face, cell), (right_face, ce
     [((2, 5), (4, 5)), (4, 6), ((4, 7), (3, 7)), (2, 3), (3, 4), ((1, 0), (2, 0)), (1, 1), ((3, 2), (1, 2))],  # face_5
 ]
 
-
 class RubiksCube:
     # note on mechanics of the block:
     #   Only faces can rotate.
     #   faces can rotate CW or CCW
     #       This will be based on orientation from the 'Entire Block' representation from above.
+
+    ROTATE_CW = 0
+    ROTATE_CCW = 1
+
+    FRONT = WHITE = 0
+    TOP = RED = 1
+    LEFT = BLUE = 2
+    RIGHT = GREEN = 3
+    BOTTOM = ORANGE = 4
+    BACK = YELLOW = 5
 
     def __init__(self, face_0=None, face_1=None, face_2=None, face_3=None, face_4=None, face_5=None):
         self.face_0 = face_0 or RubiksFace(0)
@@ -102,6 +111,8 @@ class RubiksCube:
         self.faces[face].rotate(direction)
         self._rotate_edge(cube_map[face], direction)
 
+        return (face, direction)
+
     def _rotate_edge(self, edges, direction):
         cube_copy = copy.deepcopy(self)
 
@@ -148,6 +159,15 @@ class RubiksFace:
     #           --- --- ---
     #          | 5 | 6 | 7 |
     #           --- --- ---
+
+    T_L = 0
+    T_C = 1
+    T_R = 2
+    L_C = 3
+    R_C = 4
+    B_L = 5
+    B_C = 6
+    B_R = 7
 
     def __init__(self, face_color=None, face=None):
         self.face_color = face_color

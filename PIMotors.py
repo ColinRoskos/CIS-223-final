@@ -3,6 +3,8 @@
 #
 # Author : Colin Roskos
 import RPi.GPIO as GPIO #pigpio
+import time
+
 GPIO.setmode(GPIO.BOARD)
 
 class Motor:
@@ -72,6 +74,11 @@ class Motor:
     def print_position(self):
         print(self.position)
 
+    def quarter_turn(self, direction):
+        for i in range(1024):
+            time.sleep(.001)
+            self.change_position(1, direction)
+
 
 def main():
     import time
@@ -82,9 +89,11 @@ def main():
         direction = 0
         if x > 3:
             direction = 1
-        for i in range(1024):
-            time.sleep(.001)
-            moto.change_position(1, direction)
+        
+        moto.quarter_turn(direction)
+        #for i in range(1024):
+        #    time.sleep(.001)
+        #    moto.change_position(1, direction)
 
     moto.print_position()
 

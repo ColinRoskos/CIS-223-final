@@ -3,6 +3,7 @@
 # Implements the solving steps and returns a list for steps to solve the given rubik's cube
 #
 # Authors : Colin Roskos, Winsten Coellens
+
 from RubicksCube import RubiksCube as RubiksCube
 from RubicksCube import RubiksFace as RF
 
@@ -520,15 +521,6 @@ def _determine_start_cond(cube):
         if face in edges:
             face_index = face_order.index(face)
             rotation =  face_index - edges.index(face)
-    # if RubiksCube.RED in edges:
-    #     face_index = face_order.index(RubiksCube.RED)
-    #     rotation = edges.index(edge_pos[face_index])
-    # elif RubiksCube.GREEN in edges:
-    #     rotation = edges.index(RubiksCube.GREEN) - 1
-    # elif RubiksCube.ORANGE in edges:
-    #     rotation = edges.index(RubiksCube.ORANGE) - 2
-    # elif RubiksCube.BLUE in edges:
-    #     rotation = edges.index(RubiksCube.BLUE) + 1
 
     return rotation, edges
 
@@ -686,16 +678,6 @@ def _bottom_place_corners(cube):
     while not _bottom_check_corner_positions(cube, orientaion_pattern) and limiter < 2:
         _merge_lists(steps, _bottom_corner_placer(cube, orientaion_pattern[corner_index]))
         limiter += 1
-    # corner_index = 0
-    # corner_placed = False
-    # while corner_index < 4 and not corner_placed:
-    #     color, l_adj, r_adj = cube.get_cell(RubiksCube.BACK, 7, True)
-    #     det = (color, l_adj, r_adj)
-    #     if sides[0] in det and orientaion_pattern[0][0] in det and orientaion_pattern[0][2] in det:
-    #         corner_placed = True
-    #         continue
-    #     sides.append(cube.rotate(RubiksCube.BACK, RubiksCube.ROTATE_CW))
-    #     corner_index += 1
 
     return steps
 
@@ -995,6 +977,7 @@ def main():
     cube.print_cube()
     solve(cube)
     cube.print_cube()
+
 
 if __name__ == "__main__":
     main()

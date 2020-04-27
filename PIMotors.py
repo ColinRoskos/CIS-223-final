@@ -76,7 +76,7 @@ class Motor:
 
     def quarter_turn(self, direction):
         for i in range(1024):
-            time.sleep(.001)
+            time.sleep(.0015)
             self.change_position(1, direction)
 
 

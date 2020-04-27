@@ -123,7 +123,7 @@ class RubiksCube:
         print("\n")
         self.face_5.print_face()
 
-    def rotate(self, face, direction):
+    def rotate(self, face, direction=0):
         """
         rotates a face on the rubik's cube
         :param face: the face to rotate
@@ -133,7 +133,6 @@ class RubiksCube:
 
         self.faces[face].rotate(direction)
         self._rotate_edge(cube_map[face], direction)
-
         return (face, direction)
 
     def _rotate_edge(self, edges, direction):
